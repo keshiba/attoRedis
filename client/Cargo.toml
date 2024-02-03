@@ -1,5 +1,5 @@
 [package]
-name = "mini-redis-client"
+name = "attoredis-client"
 version = "0.1.0"
 edition = "2021"
 

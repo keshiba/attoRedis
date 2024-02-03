@@ -21,12 +21,12 @@ impl Response {
         match self {
             Response::Echo { msg } =>
                 format!("REPLY {}", msg),
-            Response::Value { key, value } =>
-                format!("{} = {}", key, value),
+            Response::Value { key: _key, value } =>
+                format!("{}", value),
             Response::Set { key: _key, value, previous } =>
-                format!("{} replaces {:?}", value, previous),
+                format!("{} <=> {:?}", value, previous),
             Response::Error { msg } =>
-                format!("error: {}", msg)
+                format!("ERR: {}", msg)
         }
     }
 }

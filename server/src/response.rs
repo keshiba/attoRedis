@@ -1,5 +1,3 @@
-use std::fmt::format;
-
 pub enum Response {
     Echo {
         msg: String

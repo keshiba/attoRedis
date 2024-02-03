@@ -1,5 +1,9 @@
+use std::fmt::format;
+
 pub enum Response {
-    Hello,
+    Echo {
+        msg: String
+    },
     Value {
         key: String,
         value: String,
@@ -17,11 +21,12 @@ pub enum Response {
 impl Response {
     pub fn serialize(&self) -> String {
         match self {
-            Response::Hello => "HELLO".into(),
+            Response::Echo { msg } =>
+                format!("REPLY {}", msg),
             Response::Value { key, value } =>
                 format!("{} = {}", key, value),
-            Response::Set { key, value, previous } =>
-                format!("set {}={} replaces {:?}", key, value, previous),
+            Response::Set { key: _key, value, previous } =>
+                format!("{} replaces {:?}", value, previous),
             Response::Error { msg } =>
                 format!("error: {}", msg)
         }

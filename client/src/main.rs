@@ -42,8 +42,6 @@ async fn main() {
         tokio::select! {
            input = stdin.next() => {
                 if let Some(Ok(input)) = input {
-
-                    println!("Sending: {}", std::str::from_utf8(&input).unwrap().to_string());
                     sink.send(input).await.unwrap();
                 } else {
                     break;

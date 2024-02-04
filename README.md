@@ -1,4 +1,4 @@
-[![Rust](https://github.com/keshiba/attoRedis/actions/workflows/build.yml/badge.svg)](https://github.com/keshiba/attoRedis/actions/workflows/build.yml)
+[![Rust](https://github.com/keshiba/attoRedis/actions/workflows/build.yml/badge.svg)](https://github.com/keshiba/attoRedis/actions/workflows/build.yml) [![codecov](https://codecov.io/gh/keshiba/attoRedis/graph/badge.svg?token=VSABNJ034P)](https://codecov.io/gh/keshiba/attoRedis)
 
 # attoRedis
 

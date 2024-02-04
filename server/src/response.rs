@@ -23,9 +23,9 @@ impl Response {
             Response::Echo { msg } =>
                 format!("REPLY {}", msg),
             Response::Keys { keys } =>
-                format!("{}", keys.join("\r\n")),
+                keys.join("\r\n").to_string(),
             Response::Value { value } =>
-                format!("{}", value),
+                value.to_string(),
             Response::Set{ .. } =>
                 "OK".into(),
             Response::Error { msg } =>

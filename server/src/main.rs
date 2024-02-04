@@ -106,7 +106,7 @@ fn handle_request(request_str: &str, db: &Arc<Database>) -> Response {
             }
         }
         Request::Keys => {
-            let keys: Vec<String> = db.keys().map(|key| key.clone()).collect();
+            let keys: Vec<String> = db.keys().cloned().collect();
             Response::Keys {
                 keys
             }

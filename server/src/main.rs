@@ -92,7 +92,6 @@ fn handle_request(request_str: &str, db: &Arc<Database>) -> Response {
         },
         Request::Get { key } => match db.get(&key) {
             Some(value) => Response::Value {
-                key,
                 value: value.clone(),
             },
             None => Response::Error {

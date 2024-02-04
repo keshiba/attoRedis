@@ -9,11 +9,13 @@ pub enum Response {
     Set {
         key: String,
         value: String,
-        previous: Option<String>,
     },
     Error {
         msg: String
     },
+    Keys {
+        keys: Vec<String>
+    }
 }
 
 impl Response {
@@ -21,12 +23,14 @@ impl Response {
         match self {
             Response::Echo { msg } =>
                 format!("REPLY {}", msg),
+            Response::Keys { keys } =>
+                format!("{}", keys.join("\r\n")),
             Response::Value { key: _key, value } =>
                 format!("{}", value),
-            Response::Set { key: _key, value, previous } =>
-                format!("{} <=> {:?}", value, previous),
+            Response::Set{ .. } =>
+                "OK".into(),
             Response::Error { msg } =>
-                format!("ERR: {}", msg)
+                format!("ERR: {}", msg),
         }
     }
 }

@@ -100,11 +100,16 @@ fn handle_request(request_str: &str, db: &Arc<Database>) -> Response {
             }
         }
         Request::Set { key, value } => {
-            let previous = db.insert(key.clone(), value.clone());
+            db.insert(key.clone(), value.clone());
             Response::Set {
                 key,
                 value,
-                previous,
+            }
+        }
+        Request::Keys => {
+            let keys: Vec<String> = db.keys().map(|key| key.clone()).collect();
+            Response::Keys {
+                keys
             }
         }
     }

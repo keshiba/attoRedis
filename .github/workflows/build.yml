@@ -61,8 +61,7 @@ jobs:
       - name: Generate coverage report
         run: |
           cargo llvm-cov clean --workspace
-          cargo llvm-cov test --all-features --package attoredis-server -- --test-threads=1
-          cargo llvm-cov test --all-features --package attoredis-client -- --test-threads=1
+          cargo llvm-cov test --all-features -- --test-threads=1
           cargo llvm-cov report --lcov > lcov.txt
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3

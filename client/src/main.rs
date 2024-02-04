@@ -6,8 +6,7 @@ use clap::Parser;
 use futures::SinkExt;
 use tokio::net::TcpStream;
 use tokio_stream::StreamExt;
-use tokio_util::bytes::BytesMut;
-use tokio_util::codec::{BytesCodec, FramedRead, FramedWrite};
+use tokio_util::codec::{FramedRead, FramedWrite, LinesCodec};
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -29,25 +28,26 @@ async fn main() {
     let host_url = format!("{}:{}", args.server_host, args.port);
     println!("Connecting to : {}", &host_url);
 
-    let mut stdout = FramedWrite::new(tokio::io::stdout(), BytesCodec::new());
-    let stdin = FramedRead::new(tokio::io::stdin(), BytesCodec::new());
-    let mut stdin = stdin.map(|i| i.map(BytesMut::freeze));
     let mut tcp_stream = TcpStream::connect(&host_url).await.unwrap();
-
     let (reader, writer) = tcp_stream.split();
-    let mut stream = FramedRead::new(reader, BytesCodec::new());
-    let mut sink = FramedWrite::new(writer, BytesCodec::new());
+
+    let mut in_stream = FramedRead::new(reader, LinesCodec::new());
+    let mut out_stream = FramedWrite::new(writer, LinesCodec::new());
+
+    let mut stdout = FramedWrite::new(tokio::io::stdout(), LinesCodec::new());
+    let mut stdin = FramedRead::new(tokio::io::stdin(), LinesCodec::new());
+    // let mut stdin = stdin.map(|i| i.map(BytesMut::freeze));
 
     loop {
         tokio::select! {
            input = stdin.next() => {
                 if let Some(Ok(input)) = input {
-                    sink.send(input).await.unwrap();
+                    out_stream.send(input).await.unwrap();
                 } else {
                     break;
                 }
             },
-            response = stream.next() => {
+            response = in_stream.next() => {
                 if let Some(Ok(msg)) = response {
                     stdout.send(msg).await.unwrap();
                 } else {
